@@ -11,11 +11,7 @@ function Swap_chess() {
         </Container>
       </Navbar>
       
-      <br />
-      
-     
-      
-      
+      <br/>
     </>
   );
 }
