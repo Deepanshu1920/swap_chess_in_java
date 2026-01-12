@@ -1,4 +1,4 @@
-.App {
+.Swap_chess {
   text-align: center;
 }
 
@@ -21,11 +21,11 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(53, 50, 50);
 }
 
 .App-link {
-  color: #61dafb;
+  color: #89b3bf;
 }
 
 @keyframes App-logo-spin {
