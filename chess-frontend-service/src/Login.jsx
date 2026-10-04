@@ -23,6 +23,7 @@ function FloatingPiece({ piece, style }) {
 }
 
 export default function Login() {
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [focused, setFocused] = useState(null);
@@ -259,15 +260,20 @@ export default function Login() {
             <span style={styles.dividerDot}>◆</span>
             <div style={styles.dividerLine} />
           </div>
-
           <form onSubmit={handleSubmit}>
             <div style={styles.inputWrap}>
-              <label style={styles.label}>Username</label>
+              <label style={styles.label}>Email id</label>
+
               <input
-                type="text"
-                placeholder="your handle"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={e => {
+                  const emailValue = e.target.value;
+
+                  setEmail(emailValue);
+                  setUsername(emailValue.split('@')[0]);
+                }}
                 onFocus={() => setFocused('user')}
                 onBlur={() => setFocused(null)}
                 style={styles.input(focused === 'user')}
@@ -295,7 +301,7 @@ export default function Login() {
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
             >
-              Make Your Move
+              Let's Play
             </button>
           </form>
 
