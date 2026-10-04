@@ -29,6 +29,8 @@ export default function Login() {
   const [focused, setFocused] = useState(null);
   const [hovered, setHovered] = useState(false);
   const [boardFlash, setBoardFlash] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
 
   const floaters = Array.from({ length: 14 }, (_, i) => ({
     piece: chessPieces[i % chessPieces.length],
@@ -44,16 +46,145 @@ export default function Login() {
   }));
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setBoardFlash(true);
-    setTimeout(() => setBoardFlash(false), 600);
-  };
+  e.preventDefault();
+
+  if (!username) return;
+
+  setGameStarted(true);
+};
 
   const board = Array.from({ length: 64 }, (_, i) => {
     const row = Math.floor(i / 8);
     const col = i % 8;
     return (row + col) % 2 === 0;
   });
+
+
+const gameStyles = {
+  page: {
+    minHeight: '100vh',
+    background:
+      'linear-gradient(135deg, #0f0c0a 0%, #1a1410 40%, #0d1117 100%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: "'Georgia', 'Times New Roman', serif",
+    position: 'relative',
+    overflow: 'hidden',
+    color: '#e8d5a8',
+  },
+
+  card: {
+    width: '100%',
+    maxWidth: '520px',
+    padding: '50px',
+    textAlign: 'center',
+    background:
+      'linear-gradient(160deg, rgba(30,22,14,0.98), rgba(20,16,10,0.99))',
+    border: '1px solid rgba(200,169,110,0.35)',
+    borderRadius: '4px',
+    boxShadow: '0 32px 80px rgba(0,0,0,0.8)',
+  },
+
+  logo: {
+    fontSize: '3.5rem',
+    color: '#c8a96e',
+    marginBottom: '8px',
+  },
+
+  title: {
+    color: '#c8a96e',
+    fontSize: '1.8rem',
+    letterSpacing: '0.18em',
+    textTransform: 'uppercase',
+    fontWeight: 'normal',
+    margin: 0,
+  },
+
+  welcome: {
+    marginTop: '12px',
+    color: 'rgba(232,213,168,0.65)',
+    fontSize: '1rem',
+  },
+
+  divider: {
+    height: '1px',
+    background:
+      'linear-gradient(90deg, transparent, rgba(200,169,110,0.4), transparent)',
+    margin: '30px 0',
+  },
+
+  heading: {
+    color: '#c8a96e',
+    fontSize: '1.1rem',
+    letterSpacing: '0.2em',
+    textTransform: 'uppercase',
+    fontWeight: 'normal',
+    marginBottom: '25px',
+  },
+
+  colorContainer: {
+    display: 'flex',
+    gap: '18px',
+    justifyContent: 'center',
+  },
+
+  colorButton: {
+    flex: 1,
+    maxWidth: '180px',
+    padding: '20px',
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(200,169,110,0.25)',
+    borderRadius: '4px',
+    color: '#e8d5a8',
+    fontFamily: 'inherit',
+    fontSize: '0.9rem',
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+  },
+
+  selectedWhite: {
+    background: 'rgba(232,213,168,0.15)',
+    border: '1px solid #e8d5a8',
+    boxShadow: '0 0 20px rgba(232,213,168,0.15)',
+  },
+
+  selectedBlack: {
+    background: 'rgba(0,0,0,0.5)',
+    border: '1px solid #c8a96e',
+    boxShadow: '0 0 20px rgba(200,169,110,0.15)',
+  },
+
+  piece: {
+    display: 'block',
+    fontSize: '3rem',
+    marginBottom: '10px',
+  },
+
+  selectedText: {
+    color: '#c8a96e',
+    marginTop: '25px',
+    fontSize: '0.85rem',
+    letterSpacing: '0.1em',
+  },
+
+  moveButton: {
+    width: '100%',
+    marginTop: '30px',
+    padding: '15px',
+    border: 'none',
+    borderRadius: '2px',
+    background: 'linear-gradient(135deg, #b89558, #9a7730)',
+    color: '#0f0c0a',
+    fontFamily: 'inherit',
+    fontWeight: 'bold',
+    fontSize: '0.75rem',
+    letterSpacing: '0.3em',
+    textTransform: 'uppercase',
+  },
+};
 
   const styles = {
     page: {
@@ -216,6 +347,89 @@ export default function Login() {
       cursor: 'pointer',
     },
   };
+
+
+  if (gameStarted) {
+  return (
+    <div style={gameStyles.page}>
+      <div style={gameStyles.card}>
+
+        <div style={gameStyles.logo}>♔</div>
+
+        <h1 style={gameStyles.title}>
+          Swap Chess
+        </h1>
+
+        <p style={gameStyles.welcome}>
+          Welcome, {username}
+        </p>
+
+        <div style={gameStyles.divider} />
+
+        <h2 style={gameStyles.heading}>
+          Choose Your Side
+        </h2>
+
+        <div style={gameStyles.colorContainer}>
+
+          <button
+            type="button"
+            onClick={() => setSelectedColor('white')}
+            style={{
+              ...gameStyles.colorButton,
+              ...(selectedColor === 'white'
+                ? gameStyles.selectedWhite
+                : {})
+            }}
+          >
+            <span style={gameStyles.piece}>♙</span>
+            <span>White</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSelectedColor('black')}
+            style={{
+              ...gameStyles.colorButton,
+              ...(selectedColor === 'black'
+                ? gameStyles.selectedBlack
+                : {})
+            }}
+          >
+            <span style={gameStyles.piece}>♟</span>
+            <span>Black</span>
+          </button>
+
+        </div>
+
+        {selectedColor && (
+          <p style={gameStyles.selectedText}>
+            You selected {selectedColor}
+          </p>
+        )}
+
+        <button
+          type="button"
+          disabled={!selectedColor}
+          onClick={() => {
+            alert(`Let's make a move as ${selectedColor}!`);
+          }}
+          style={{
+            ...gameStyles.moveButton,
+            opacity: selectedColor ? 1 : 0.4,
+            cursor: selectedColor ? 'pointer' : 'not-allowed'
+          }}
+        >
+          Make a Move
+        </button>
+
+      </div>
+    </div>
+  );
+}
+
+
+
 
   return (
     <>
